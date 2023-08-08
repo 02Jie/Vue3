@@ -1,51 +1,46 @@
 <template>
-  <div>姓名：{{name}}</div>
-  <div>年龄：{{age}}</div>
-  <div>技能：{{hzwObj.jineng}}</div>
-  <div>职位：{{hzwObj.zhiwei}}</div>
-  <button @click="handleValue">点我改变数据</button>
+   姓： <input type="text" name="" id="" v-model="person.firstName"> <br>
+   名： <input type="text" name="" id="" v-model="person.lastName">
+   <br>
+   <hr>
+   <span>全名：{{person.fullName}}</span>
+   <br>
+   <hr>
+   修改：<input type="text" v-model="person.fullName">
 </template>
 
 <script>
-import {ref,reactive} from 'vue'
+import {ref,reactive,computed} from 'vue'
 
 export default {
   setup() {
-    let name = ref('路飞')
-    let age = ref('18')
+   let person = reactive({ 
+    firstName:'路',
+    lastName:'飞'
+   })
 
 
-    // let hzwObj = ref({
-    //       jineng:'四档·蛇人',
-    //       zhiwei:'船长'
-    //     })
-
-    let hzwObj = reactive({
-      jineng:'四档·蛇人',
-      zhiwei:'船长'
-    })
-
-    
+   //直接person.fullName是可以追加属性的
+   //简写 （没有修改操作，只能读数据）
+   person.fullName = computed(()=>{
+    return person.firstName + '-' + person.lastName
+   }) 
 
 
-   function handleValue() {
-      name.value = '索隆'
-      age.value = '20'
+  // //完整写法
+  //   person.fullName = computed({
+  //     get() {
+  //       return person.firstName + '-' + person.lastName
+  //     },
+  //     set(value) {
+  //       const newArr = value.split('-')
+  //       person.firstName = newArr[0]
+  //       person.lastName = newArr[1]
+  //     }
+  //   })
 
-      //ref使用方法
-     /*  hzwObj.value.jineng = '五档·尼卡形态'
-      hzwObj.value.zhiwei = '大船长' */
-
-      //reactive使用方式
-      hzwObj.jineng = '五档·尼卡形态'
-      hzwObj.zhiwei = '大船长'
-    }
-   
     return {
-      name,
-      age,
-      hzwObj,
-      handleValue,
+       person
     }
   }
 }
